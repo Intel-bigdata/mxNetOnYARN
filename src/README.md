@@ -1,5 +1,14 @@
 # MXNet on Yarn Codebase
 
+## Basic Design
+
+### Native Model (Recommaned)
+
+### Normal Model
+
+## Prerequest
+
+MXNet installed on client, and MXNet [dependencies]() on Cluster. Make sure this repo is in the same directory with MXNet repo, such that we can access `launch.py`.
 
 ## Parameters Extraction
 

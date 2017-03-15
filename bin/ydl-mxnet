@@ -1,20 +1,27 @@
 #!/bin/bash
-
-CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.GenTrain"
 # Kvstore log for Debug
 #export PS_VERBOSE=1
 #ps-lite/tracker/dmlc_local.py -n 2 -s 2 \
-../mxnet/tools/launch.py -n 2 --launcher local \
-  java -Xmx3G -Djava.library.path=scala-package/native/linux-x86_64-cpu/target/ \
-  -cp scala-package/assembly/linux-x86_64-cpu/target/*:scala-package/examples/target/*:scala-package/examples/target/classes/lib/* \
+
+PLATFORM="linux-x86_64-cpu"
+LAUNCH_SCRIPT="../../mxnet/tools/launch.py"
+MODEL="$1"
+#echo $MODEL
+NUM_WORKER=2
+MXNET_HOME="../mxnet/"
+
+DATA_DIR="data"
+if [[ $MODEL == "test" ]]; then
+	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.TrainMnist"
+	MODEL="local"
+else
+	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.GenTrain"
+fi
+$LAUNCH_SCRIPT -n $NUM_WORKER --launcher $MODEL \
+  java -Xmx4G -Djava.library.path=$MXNET_HOME/scala-package/native/$PLATFORM/target/ \
+  -cp MXNET_HOME/scala-package/assembly/$PLATFORM/target/*:MXNET_HOME/scala-package/examples/target/*:scala-package/examples/target/classes/lib/* \
   $CLIENT_MAIN_CLASS \
-  --data-dir=data/ \
+  --data-dir=$DATA_DIR \
   --num-epochs=4 \
   --network=mlp \
-  --cpus=0 \
-  --kv-store=dist_async \
-#  --kv-store=dist_sync \
-#  --num-worker=2 \
-#  --num-server=2 \
-#  --scheduler-host=10.239.12.123 \
-#  --scheduler-port=9099
+  --kv-store=dist_async
