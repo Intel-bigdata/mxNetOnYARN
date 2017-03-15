@@ -1,0 +1,20 @@
+#!/bin/bash
+
+CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.GenTrain"
+# Kvstore log for Debug
+#export PS_VERBOSE=1
+#ps-lite/tracker/dmlc_local.py -n 2 -s 2 \
+../mxnet/tools/launch.py -n 2 --launcher local \
+  java -Xmx3G -Djava.library.path=scala-package/native/linux-x86_64-cpu/target/ \
+  -cp scala-package/assembly/linux-x86_64-cpu/target/*:scala-package/examples/target/*:scala-package/examples/target/classes/lib/* \
+  $CLIENT_MAIN_CLASS \
+  --data-dir=data/ \
+  --num-epochs=4 \
+  --network=mlp \
+  --cpus=0 \
+  --kv-store=dist_async \
+#  --kv-store=dist_sync \
+#  --num-worker=2 \
+#  --num-server=2 \
+#  --scheduler-host=10.239.12.123 \
+#  --scheduler-port=9099
