@@ -3,31 +3,31 @@
 #export PS_VERBOSE=1
 #ps-lite/tracker/dmlc_local.py -n 2 -s 2 \
 
+
 PLATFORM="linux-x86_64-cpu"
-MODEL="$1"
 #echo $MODEL
 NUM_WORKER=2
 MXNET_HOME="../mxnet"
 LAUNCH_SCRIPT="${MXNET_HOME}/tools/launch.py"
+JOB=""
 
+if [[ -n $1 ]]; then
+  MODEL="$1"
+else
+  MODEL="local"
+fi
 
 if [[ -n $2 ]]; then
-  DATA_DIR="$2"
+  JOB="$2"
+else
+  echo "Please specify a python job, e.g., job.py"
+  exit
+fi
+
+if [[ -n $3 ]]; then
+  DATA_DIR="$3"
 else
   DATA_DIR="data"
 fi
 
-if [[ $MODEL == "test" ]]; then
-	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.TrainMnist"
-	MODEL="local"
-else
-	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.GenTrain"
-fi
-$LAUNCH_SCRIPT -n $NUM_WORKER --launcher $MODEL \
-  java -Xmx4G -Djava.library.path=$MXNET_HOME/scala-package/native/$PLATFORM/target/ \
-  -cp $MXNET_HOME/scala-package/assembly/$PLATFORM/target/*:$MXNET_HOME/scala-package/examples/target/*:scala-package/examples/target/classes/lib/* \
-  $CLIENT_MAIN_CLASS \
-  --data-dir=$DATA_DIR/ \
-  --num-epochs=4 \
-  --network=mlp \
-  --kv-store=dist_async
+$LAUNCH_SCRIPT -n $NUM_WORKER --launcher $MODEL python $JOB --kv-store dist_sync
