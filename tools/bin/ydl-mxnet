@@ -4,7 +4,6 @@
 #ps-lite/tracker/dmlc_local.py -n 2 -s 2 \
 
 
-PLATFORM="linux-x86_64-cpu"
 #echo $MODEL
 NUM_WORKER=2
 MXNET_HOME="../mxnet"
@@ -27,7 +26,7 @@ fi
 if [[ -n $3 ]]; then
   DATA_DIR="$3"
 else
-  DATA_DIR="data"
+  DATA_DIR="data/"
 fi
 
-$LAUNCH_SCRIPT -n $NUM_WORKER --launcher $MODEL python $JOB --kv-store dist_sync
+$LAUNCH_SCRIPT -n $NUM_WORKER --launcher $MODEL python $JOB --data-dir=$DATA_DIR $@

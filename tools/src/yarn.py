@@ -133,7 +133,7 @@ def submit(args):
             # subprocess.call(python_job)
             args.command = args.command[2:]
             if args.native == 'scala':
-                args.command.insert(0, 'sh run_scala.sh')
+                args.command.insert(0, './run_scala.sh')
                 # args.command = ["echo haha"]
             if args.native == 'cpp':
                 # TODO after cpp interface is complete

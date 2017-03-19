@@ -3,17 +3,13 @@
 
 DEBUG=0
 MXNET_HOME="../mxnet"
+PLATFORM="linux-x86_64-cpu"
 
 if [[ DEBUG==0 ]]; then
 	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.TrainMnist"
-	MODEL="local"
 else
 	CLIENT_MAIN_CLASS="ml.dmlc.mxnet.examples.imclassification.GenTrain"
 fi
 java -Xmx4G -Djava.library.path=$MXNET_HOME/scala-package/native/$PLATFORM/target/ \
 	-cp $MXNET_HOME/scala-package/assembly/$PLATFORM/target/*:$MXNET_HOME/scala-package/examples/target/*:scala-package/examples/target/classes/lib/* \
-	$CLIENT_MAIN_CLASS \
-	--data-dir=$DATA_DIR/ \
-	--num-epochs=4 \
-	--network=mlp \
-	--kv-store=dist_sync
+	$CLIENT_MAIN_CLASS $@
