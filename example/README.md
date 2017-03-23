@@ -6,12 +6,13 @@
 
 Test Locally:
 
-    ./bin/ydl-mxnet yarn example/mnist/train_mnist.py --kv-store dist_sync
+    ./bin/ydl-mx yarn example/mnist/train_mnist.py --kv-store dist_sync
 
 
 USAGE:
 
-    ./bin/ydl-mxnet yarn example/mnist/train_mnist.py --kv-store dist_sync
+    ./bin/ydl-mx yarn example/mnist/train_mnist.py --kv-store dist_sync
+    --data-dir
 
 ## Design
     
