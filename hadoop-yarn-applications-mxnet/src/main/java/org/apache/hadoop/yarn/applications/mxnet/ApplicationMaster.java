@@ -451,7 +451,7 @@ public class ApplicationMaster {
      * @param containers
      */
     private synchronized void onStartContainerError(ContainerId cid) {
-        ApplicationMaster.this.handleFailure(Collections.singletonList(cid));
+        //ApplicationMaster.this.handleFailure(Collections.singletonList(cid));
     }
     /**
      * free the containers that have not yet been launched
@@ -462,7 +462,7 @@ public class ApplicationMaster {
             Collection<Container> containers) {
         if(containers.size() == 0) return;
         for(Container c : containers){
-            launchDummyTask(c);
+            //launchDummyTask(c);
         }
     }
 
@@ -479,7 +479,7 @@ public class ApplicationMaster {
         Collection<Container> freelist = new java.util.LinkedList<Container>();
         for (Container c : containers) {
             if(blackList.contains(c.getNodeHttpAddress())){
-			    launchDummyTask(c);
+			    //launchDummyTask(c);
                 continue;
 		    }
 
@@ -603,7 +603,7 @@ public class ApplicationMaster {
                 failed.add(s.getContainerId());
             }
         }
-        this.handleFailure(failed);
+        //this.handleFailure(failed);
     }
 
     /**
@@ -663,8 +663,8 @@ public class ApplicationMaster {
         @Override
         public void onGetContainerStatusError(ContainerId cid, Throwable ex) {
             LOG.info("onGetContainerStatusError Invoked: " + ex.toString());
-            ApplicationMaster.this
-                    .handleFailure(Collections.singletonList(cid));
+            //ApplicationMaster.this
+              //      .handleFailure(Collections.singletonList(cid));
         }
 
         @Override
