@@ -57,7 +57,8 @@ def yarn_submit(args, nworker, nserver, pass_env):
 
     fset, new_command = opts.get_cache_file_set(args)
     fset.add(YARN_JAR_PATH)
-    fset.add(YARN_BOOT_PY)
+    # Remove launcher.py from file list
+    # fset.add(YARN_BOOT_PY)
     ar_list = []
 
     for fname in args.archives:
@@ -104,7 +105,9 @@ def yarn_submit(args, nworker, nserver, pass_env):
         cmd += ' -appcp %s ' % args.yarn_app_classpath
     for entry in args.env:
         cmd += ' -env %s ' % entry
-    cmd += (' '.join(['./launcher.py'] + new_command))
+    # Remove launcher.py from cmd
+    # cmd += (' '.join(['./launcher.py'] + new_command))
+    cmd += (' '.join(new_command))
 
     logging.debug("Submit job with %d workers and %d servers", nworker, nserver)
     def run():
