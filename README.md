@@ -3,7 +3,7 @@ MXNet on YARN is a project based on [dmlc-core](https://github.com/dmlc/dmlc-cor
 
 **Note that both the codebase and documentation are work in progress. They may not be the final version.**
 
-## Basic Design
+## Overview
 
 Performing large scale training or predicting tasks with high efficiency is always a big challenge in machine learning and deep learning. Because in most cases, training datasets, computation graphs or variables etc, are always too large for single node. To address this issue, distributed support (or enabling) on current cluster environments, i.e., Hadoop YARN, is very import for current deep learning frameworks. 
 
@@ -24,12 +24,14 @@ Users can use this command to submit training or serving tasks with specific par
 
 `task_command` is the command that specifies the detailed configure of machine learning tasks, e.g., `job.py --kv-store sync --data-dir` for distributed training. The basic format is similar to single node MXNet tasks without `python` prefix. So, all MXNet parameters are supported, and can be added to `task_command`.
 
-## MXNetonYARN Detailed Design
+## MXNetonYARN Basic Design
 
-### Training
+### Basic Design
+
+Here is the basic design of MXNetOnYARN:
 
 ![Basic Design](images/mx_yarn_workflow.png)
-After users submitted MXNet jobs on client node, MXNetOnYARN will do the following steps:
+We can see that After users submitted MXNet jobs on client node, MXNetOnYARN will do the following steps:
 
 1. Launch a scheduler on client node. 
 2. Client node submit MXNetAPPMaster container.
@@ -39,9 +41,23 @@ After users submitted MXNet jobs on client node, MXNetOnYARN will do the followi
 6. Containers launches MXNet workers and servers, which registers to Scheduler after being launched.
 
 
+### Support for Current YARN Environment
+MXNet requires a bundle of third-part packages and dependencies, which are not normally installed in industrial environment. To address this issue, we introduce three solutions:
+
+1. **Docker Solution (Easy to Deploy and Support)** with all dependencies pre-built in images.
+2. **Native Solution (Highest Performance)** with all workers and servers running in native or JVM env.
+3. **Labeled Solution (Test or Experimental Deployment)** with all dependencies installed on some cluster nodes
+
+Note that Docker Solution needs minimum changes if docker ecosystem is already setup on YARN, but it needs extra resources for docker containers. On the other hand, Native Solution promise highest efficiency with a few modifications, but it relies on other native APIs, e.g., MXNet CPP or Scala APIs, which are not full accomplished. Last but not least, Labeled Solution requires minimum changes on current environment, which is suggested for test or experimental deployment, but its capability is limited by the number of labeled nodes.
+
 #### Docker Support
 
+
+
 #### Native Support (without Python)
+**Note that this part is under modification, some details may be not final.** 
+
+#### Labeled Python nodes
 
 ### Serving (Inference)
 
