@@ -1,4 +1,4 @@
-package org.apache.hadoop.yarn.applications.mxnet;
+package org.hdl.mxnet.yarn;
 
 import java.io.File;
 import java.io.IOException;

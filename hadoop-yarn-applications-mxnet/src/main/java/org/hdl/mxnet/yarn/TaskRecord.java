@@ -1,4 +1,4 @@
-package org.apache.hadoop.yarn.applications.mxnet;
+package org.hdl.mxnet.yarn;
 
 import org.apache.hadoop.yarn.api.records.Container;
 import org.apache.hadoop.yarn.client.api.AMRMClient.ContainerRequest;
