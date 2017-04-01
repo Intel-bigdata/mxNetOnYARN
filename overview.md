@@ -4,7 +4,7 @@
 
 Here is the basic design of MXNetOnYARN:
 
-![Basic Design](images/mx_yarn_workflow.png)
+![Basic Design](https://cloud.githubusercontent.com/assets/3848789/24576471/f6c39260-16ee-11e7-994c-c81b9e588078.png)
 We can see that after users submitted MXNet jobs on client node, MXNetOnYARN will do the following steps:
 
 1. Launching a scheduler in client node. 
