@@ -9,7 +9,7 @@ Performing large scale training or predicting tasks with high efficiency is alwa
 
 In this project, we proposed **MXNetOnYARN** to enable MXNet distributed training and serving on Hadoop YARN, which has been used successfully to run all sorts of distributed data applications. 
 
-![Basic Design](images/mx_yarn.png)
+![Basic Design](https://cloud.githubusercontent.com/assets/3848789/24576472/f6ee3a1a-16ee-11e7-8207-a24de95435b5.png)
 
 With the help of MXNetOnYARN, users can submit multiple MXNet training or serving tasks to existing YARN cluster **without any modifications on jobs or any worry about building environment or dependencies**, etc. MXNetOnYARN will handle all details about distributed machine learning with high efficiency and flexibility. When the tasks are finished, all resources  will be released, with results and logs be saved to HDFS.
 
