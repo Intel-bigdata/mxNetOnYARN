@@ -20,18 +20,18 @@ This note describes how to deploy and run the training on Yarn.
 **The basic command is as follows:**
 
 ```bash
-ydl-mx [cluster_command] [task_command]
+ydl-mx [cluster_option] [task_option]
 ```
 Users can use this command to submit training or serving tasks with specific parameters or datasets. Note that 
 
-`cluster_command` is used to specifies the distributed environment, e.g., number of workers and servers launched. Normally, users only needs to specify the number of workers, then MXNetOnYARN will launch the same number of servers. So `--n 2` means launch 2 workers and 2 server, while `--n 2 --s 1` means launch 2 workers and 1 server.
+`cluster_option` is used to specify the distributed environment, e.g., number of workers and servers launched. Normally, users only needs to specify the number of workers, then MXNetOnYARN will launch the same number of servers. So `--n 2` means launch 2 workers and 2 server, while `--n 2 --s 1` means launch 2 workers and 1 server.
 
-`task_command` is the command that specifies the detailed configure of machine learning tasks, e.g., `job.py --kv-store sync --data-dir` for distributed training. The basic format is similar to single node MXNet tasks without `python` prefix. So, all MXNet parameters are supported, and can be added to `task_command`.
+`task_option` is used to specify the detailed configure of machine learning tasks, e.g., `job.py --kv-store sync --data-dir` for distributed training. The basic format is similar to single node MXNet tasks without `python` prefix. So, all MXNet parameters are supported, and can be added to `task_option`.
 
 ### Pre-Preparation
 
 
-**1. Distribution support in your MXNet jobs**
+**1. Distribution Support in your MXNet jobs**
 
 In your code, modify demos with [distribution support](http://mxnet.io/how_to/multi_devices.html) (e.g., `train_mnist.py`), or add create a `kvstore` and explicitly set it in your model.
 
@@ -40,31 +40,20 @@ In your code, modify demos with [distribution support](http://mxnet.io/how_to/mu
 	
 The use of parameter server is based on the [kvstore class](http://mxnet.io/api/python/kvstore.html) in MXNet.	
 
-**2. Build `ydl-mx.jar`**
-
-Assuming you have deployed HDFS and Yarn system, and have successfully built [mxnet-scala](http://mxnet.io/get_started/build_from_source.html#build-the-scala-package) with [distributed support](http://mxnet.io/how_to/multi_devices.html) (set `USE_HDFS = 1` in `config.mk` when building `libmxnet.so`). Then you can build `ydl-mx.jar` with following steps:
-
-
-1. Copy all `mxnet-scala` jars ( i.e., `mxnet-examples_XX.jar` in `mxnet/scala-package/examples/target`, `mxnet-full_XX-{your platform}-XX.jar` in `mxnet/scala-package/assembly/{your platform}/target`) to current directory. Note that `{your platform}` means that this jar is platform related.
-2. Set environment variables in `/etc/profile`. The variables need to be set are: `JAVA_HOME`, `HADOOP_HOME`, `HADOOP_HDFS_HOME`, `LD_LIBRARY_PATH`. For CDH Hadoop version, you have to download all the hadoop jars and add all these jar files in `CLASSPATH` variable.
-3. If you are using CDH Hadoop, download the `libhdfs.so` and copy it to `LD_LIBRARY_PATH` folder.
-4. Run `hadoop-yarn-applications-mxnet/build.sh` to compile Yarn ApplicationMaster and Client.
-
-
 ### How to Run
 
 For example, we can submit the application like this:
 
 	/bin/ydl-mx --n 2 --jobname MXNetOnYarn --jar ydl-mx.jar train_minist.py --kv-store sync --data-dir .
 
-**`cluster_command`**:
+**`cluster_option`**:
 
 	`--jobname` specifies the name of job
 	`--n` specifies the number of workers and servers
 	`--jar` specifies the path for `ydl-mx.jar`.
 	
 
-**`task_command`**
+**`task_option`**
 
 	train_minist.py --kv-store sync --data-dir .
 	
