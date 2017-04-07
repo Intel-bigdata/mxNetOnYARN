@@ -1,4 +1,4 @@
-**2. Build `ydl-mx.jar`**
+# How TO Build `ydl-mx.jar`
 
 Assuming you have deployed HDFS and Yarn system, and have successfully built [mxnet-scala](http://mxnet.io/get_started/build_from_source.html#build-the-scala-package) with [distributed support](http://mxnet.io/how_to/multi_devices.html) (set `USE_HDFS = 1` in `config.mk` when building `libmxnet.so`). Then you can build `ydl-mx.jar` with following steps:
 

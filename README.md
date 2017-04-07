@@ -9,24 +9,30 @@ Performing large scale training or predicting tasks with high efficiency is alwa
 
 In this project, we proposed **MXNetOnYARN** to enable MXNet distributed training and serving on Hadoop YARN, which has been used successfully to run all sorts of distributed data applications. 
 
-![Basic Design](https://cloud.githubusercontent.com/assets/3848789/24576472/f6ee3a1a-16ee-11e7-8207-a24de95435b5.png)
+<p align="center">
+<img src=https://cloud.githubusercontent.com/assets/3848789/24576472/f6ee3a1a-16ee-11e7-8207-a24de95435b5.png width=450>
+</p>
+<p align="center">
+Figure1. Basic Design
+</p>
+
 
 With the help of MXNetOnYARN, users can submit multiple MXNet training or serving tasks to existing YARN cluster **without any modifications on jobs or any worry about building environment or dependencies**, etc. MXNetOnYARN will handle all details about distributed machine learning with high efficiency and flexibility. When the tasks are finished, all resources  will be released, with results and logs be saved to HDFS.
 
-## How-To
+## Get Started
 
 This note describes how to deploy and run the training on Yarn.
 
 **The basic command is as follows:**
 
 ```bash
-ydl-mx [cluster_option] [task_option]
+ydl-mx [cluster options] [task options]
 ```
 Users can use this command to submit training or serving tasks with specific parameters or datasets. Note that 
 
-`cluster_option` is used to specify the distributed environment, e.g., number of workers and servers launched. Normally, users only needs to specify the number of workers, then MXNetOnYARN will launch the same number of servers. So `--n 2` means launch 2 workers and 2 server, while `--n 2 --s 1` means launch 2 workers and 1 server.
+`cluster options` is used to specify the distributed environment, e.g., number of workers and servers launched. Normally, users only needs to specify the number of workers, then MXNetOnYARN will launch the same number of servers. So `--n 2` means launch 2 workers and 2 server, while `--n 2 --s 1` means launch 2 workers and 1 server.
 
-`task_option` is used to specify the detailed configure of machine learning tasks, e.g., `job.py --kv-store sync --data-dir` for distributed training. The basic format is similar to single node MXNet tasks without `python` prefix. So, all MXNet parameters are supported, and can be added to `task_option`.
+`task options` is used to specify the detailed configure of machine learning tasks, e.g., `job.py --kv-store sync --data-dir` for distributed training. The basic format is similar to single node MXNet tasks without `python` prefix. So, all MXNet parameters are supported, and can be added to `task options`.
 
 ### Pre-Preparation
 
@@ -38,7 +44,11 @@ In your code, modify demos with [distribution support](http://mxnet.io/how_to/mu
 	kv = mx.kvstore.create('dist_sync')
 	model = mx.model.FeedForward.create(symbol = net, X = data, kvstore = kv, ...)
 	
-The use of parameter server is based on the [kvstore class](http://mxnet.io/api/python/kvstore.html) in MXNet.	
+The use of parameter server is based on the [kvstore class](http://mxnet.io/api/python/kvstore.html) in MXNet.
+
+**2. Prepare `ydl-mx.jar`**
+
+Download and extract `ydl-mx.jar` from our release package, and put it in your working directory. Note that `libmxnet-scala.so` is packaged into `ydl-mx.jar`. So, if it doesn't work well on your platform, please build your own `ydl-mx.jar` according to [mxnet-parent/mxnet-yarn-app/build.md](mxnet-parent/mxnet-yarn-app/build.md).
 
 ### How to Run
 
@@ -46,14 +56,14 @@ For example, we can submit the application like this:
 
 	/bin/ydl-mx --n 2 --jobname MXNetOnYarn --jar ydl-mx.jar train_minist.py --kv-store sync --data-dir .
 
-**`cluster_option`**:
+**`cluster options`**:
 
 	`--jobname` specifies the name of job
 	`--n` specifies the number of workers and servers
 	`--jar` specifies the path for `ydl-mx.jar`.
 	
 
-**`task_option`**
+**`task options`**
 
 	train_minist.py --kv-store sync --data-dir .
 	
@@ -62,9 +72,11 @@ This command is used to execute the `mnist.py` example with distributed support,
 ### Serving (Inference)
 
 
-## References
+## Support
 
 
+- You can post bug reports and feature requests at the [Issue Page](https://github.com/Intel-bigdata/MXNetOnYARN/issues).
+- Contributions via [Pull request](https://github.com/Intel-bigdata/MXNetOnYARN/pulls) is welcome.
 
 
 
